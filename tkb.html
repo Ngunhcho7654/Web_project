@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thời Khóa Biểu</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(-45deg, #00c6ff, #0072ff, #ff758c, #ff7eb3);
+            background-size: 400% 400%;
+            animation: gradientAnimation 10s ease infinite;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            transition: all .5s ease;
+        }
+
+        .sidebar header {
+            font-size: 22px;
+            color: white;
+            line-height: 70px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.2);
+            user-select: none;
+            font-weight: bold;
+        }
+
+        .sidebar ul a {
+            display: block;
+            height: 100%;
+            width: 100%;
+            line-height: 65px;
+            font-size: 18px;
+            color: white;
+            padding-left: 40px;
+            box-sizing: border-box;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: .4s;
+            cursor: pointer;
+        }
+
+        .sidebar ul a i {
+            margin-right: 16px;
+        }
+
+        .timetable-container {
+            margin-left: 20px;
+            padding: 20px;
+            transition: all .5s;
+            display: none;
+        }
+
+        #check:checked ~ .timetable-container {
+            margin-left: 270px;
+        }
+
+        .timetable {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-top: 60px;
+        }
+
+        .timetable table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .timetable th, .timetable td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .timetable th {
+            background: linear-gradient(to right, #0072ff, #00c6ff);
+            color: white;
+        }
+
+        .attendance-btn {
+            background: linear-gradient(to right, #0072ff, #00c6ff);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .attendance-btn:hover {
+            background: linear-gradient(to right, #0052d4, #4364f7);
+            transform: translateY(-2px);
+        }
+
+        .attended {
+            background: #4CAF50;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: black;
+        }
+
+        .student-list {
+            margin-top: 20px;
+        }
+
+        .student-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .student-info {
+            flex-grow: 1;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        label #btn, label #cancel {
+            position: fixed;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        label #btn {
+            left: 40px;
+            top: 25px;
+            font-size: 35px;
+            color: white;
+            padding: 6px 12px;
+            transition: all .5s;
+        }
+
+        label #cancel {
+            z-index: 1111;
+            left: -195px;
+            top: 17px;
+            font-size: 30px;
+            color: white;
+            padding: 4px 9px;
+            transition: all .5s ease;
+        }
+
+        #check {
+            display: none;
+        }
+
+        #check:checked ~ .sidebar {
+            left: 0;
+        }
+
+        #check:checked ~ label #btn {
+            left: 250px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #check:checked ~ label #cancel {
+            left: 195px;
+        }
+
+        .welcome-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .welcome-message h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .auto-attendance-btn {
+            background: linear-gradient(to right, #ff4b2b, #ff416c);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            margin: 0 auto 20px auto;
+        }
+
+        .auto-attendance-btn:hover {
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 65, 108, 0.3);
+        }
+
+        /* Make sure modal content accommodates the new button */
+        .modal-content {
+            padding-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <input type="checkbox" id="chec
+    k">
+    <label for="check">
+        <i class="fas fa-bars" id="btn"></i>
+        <i class="fas fa-times" id="cancel"></i>
+    </label>
+    <div class="sidebar">
+        <header>My App</header>
+        <ul>
+            <li><a href="#" onclick="showWelcome()"><i class="fa fa-home"></i>Overview</a></li>
+            <li><a href="#" onclick="showTimetable()"><i class="fa fa-calendar"></i>Time Table</a></li>
+            <li><a href="#"><i class="fas fa-camera"></i> Beta Ai </a></li>
+            <li><a href="#"><i class="far fa-envelope"></i>Contact</a></li>
+            <li><a href="#"><i class="far fa-question-circle"></i>About</a></li>
+            <li><a href="login.html"><i class="fa fa-sign-in-alt"></i>Log out</a></li>
+        </ul>
+    </div>
+
+    <div class="welcome-message" id="welcomeMessage">
+        <h1>Welcome to Student Portal</h1>
+        <p>Click on Time Table to view your schedule</p>
+    </div>
+
+    <div class="timetable-container" id="timetableContainer">
+        <div class="timetable">
+            <h2>Thời Khóa Biểu</h2>
+            <table>
+                <tr>
+                    <th>Thời gian</th>
+                    <th>Thứ 2</th>
+                    <th>Thứ 3</th>
+                    <th>Thứ 4</th>
+                    <th>Thứ 5</th>
+                    <th>Thứ 6</th>
+                    <th>Thứ 7</th>
+                </tr>
+                <tr>
+                    <td>7:30 - 9:30</td>
+                    <td>Toán cao cấp<br><button class="attendance-btn" onclick="openAttendanceModal('Toán cao cấp')">Điểm danh</button></td>
+                    <td>Lập trình C++<br><button class="attendance-btn" onclick="openAttendanceModal('Lập trình C++')">Điểm danh</button></td>
+                    <td>Tiếng Anh<br><button class="attendance-btn" onclick="openAttendanceModal('Tiếng Anh')">Điểm danh</button></td>
+                    <td>Vật lý<br><button class="attendance-btn" onclick="openAttendanceModal('Vật lý')">Điểm danh</button></td>
+                    <td>GDTC<br><button class="attendance-btn" onclick="openAttendanceModal('GDTC')">Điểm danh</button></td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>9:45 - 11:45</td>
+                    <td>Triết học<br><button class="attendance-btn" onclick="openAttendanceModal('Triết học')">Điểm danh</button></td>
+                    <td>-</td>
+                    <td>Toán rời rạc<br><button class="attendance-btn" onclick="openAttendanceModal('Toán rời rạc')">Điểm danh</button></td>
+                    <td>Lập trình Web<br><button class="attendance-btn" onclick="openAttendanceModal('Lập trình Web')">Điểm danh</button></td>
+                    <td>-</td>
+                    <td>AI<br><button class="attendance-btn" onclick="openAttendanceModal('AI')">Điểm danh</button></td>
+                </tr>
+                <tr>
+                    <td>13:30 - 15:30</td>
+                    <td>-</td>
+                    <td>CSDL<br><button class="attendance-btn" onclick="openAttendanceModal('CSDL')">Điểm danh</button></td>
+                    <td>-</td>
+                    <td>Python<br><button class="attendance-btn" onclick="openAttendanceModal('Python')">Điểm danh</button></td>
+                    <td>Java<br><button class="attendance-btn" onclick="openAttendanceModal('Java')">Điểm danh</button></td>
+                    <td>-</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal for attendance -->
+    <div id="attendanceModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAttendanceModal()">&times;</span>
+            <h2 id="modalTitle">Điểm danh môn: <span id="subjectName"></span></h2>
+            <button class="auto-attendance-btn">
+                Điểm Danh Tự Động
+            </button>
+            <div class="student-list" id="studentList">
+                <!-- Student list will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample student data
+        const students = [
+            { id: 1, name: "Nguyễn Văn A", studentId: "SV001" },
+            { id: 2, name: "Trần Thị B", studentId: "SV002" },
+            { id: 3, name: "Lê Văn C", studentId: "SV003" },
+            { id: 4, name: "Phạm Thị D", studentId: "SV004" },
+            { id: 5, name: "Hoàng Văn E", studentId: "SV005" }
+        ];
+
+        // Store attendance data for each subject and date
+        const attendanceData = {};
+
+        function showTimetable() {
+            document.getElementById('timetableContainer').style.display = 'block';
+            document.getElementById('welcomeMessage').style.display = 'none';
+        }
+
+        function showWelcome() {
+            document.getElementById('timetableContainer').style.display = 'none';
+            document.getElementById('welcomeMessage').style.display = 'block';
+        }
+
+        function getCurrentDate() {
+            const now = new Date();
+            return `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}`;
+        }
+
+        function openAttendanceModal(subject) {
+            const modal = document.getElementById('attendanceModal');
+            const subjectNameSpan = document.getElementById('subjectName');
+            const studentList = document.getElementById('studentList');
+            const currentDate = getCurrentDate();
+            
+            subjectNameSpan.textContent = `${subject} - ${currentDate}`;
+            studentList.innerHTML = '';
+
+            // Initialize attendance data structure
+            if (!attendanceData[subject]) {
+                attendanceData[subject] = {};
+            }
+            if (!attendanceData[subject][currentDate]) {
+                attendanceData[subject][currentDate] = new Set();
+            }
+
+            // Generate student list with attendance status
+            students.forEach(student => {
+                const studentItem = document.createElement('div');
+                studentItem.className = 'student-item';
+                
+                const isAttended = attendanceData[subject][currentDate].has(student.id);
+                
+                studentItem.innerHTML = `
+                    <div class="student-info">
+                        <strong>${student.name}</strong> - ${student.studentId}
+                    </div>
+                    <button class="attendance-btn ${isAttended ? 'attended' : ''}" 
+                            onclick="markAttendance('${subject}', ${student.id}, this)">
+                        ${isAttended ? 'Đã điểm danh' : 'Điểm danh'}
+                    </button>
+                `;
+                
+                studentList.appendChild(studentItem);
+            });
+
+            // Add summary section
+            const summaryDiv = document.createElement('div');
+            summaryDiv.className = 'attendance-summary';
+            summaryDiv.style.marginTop = '20px';
+            summaryDiv.style.padding = '10px';
+            summaryDiv.style.backgroundColor = '#f5f5f5';
+            summaryDiv.style.borderRadius = '5px';
+
+            const presentCount = attendanceData[subject][currentDate].size;
+            const totalStudents = students.length;
+            
+            summaryDiv.innerHTML = `
+                <h3>Tổng kết điểm danh</h3>
+                <p>Số sinh viên có mặt: ${presentCount}/${totalStudents}</p>
+                <p>Tỷ lệ điểm danh: ${((presentCount/totalStudents) * 100).toFixed(1)}%</p>
+            `;
+            
+            studentList.appendChild(summaryDiv);
+
+            modal.style.display = 'block';
+        }
+
+        function closeAttendanceModal() {
+            document.getElementById('attendanceModal').style.display = 'none';
+        }
+
+        function markAttendance(subject, studentId, button) {
+            const currentDate = getCurrentDate();
+
+            // Initialize data structures if they don't exist
+            if (!attendanceData[subject]) {
+                attendanceData[subject] = {};
+            }
+            if (!attendanceData[subject][currentDate]) {
+                attendanceData[subject][currentDate] = new Set();
+            }
+
+            // Toggle attendance
+            if (attendanceData[subject][currentDate].has(studentId)) {
+                attendanceData[subject][currentDate].delete(studentId);
+                button.classList.remove('attended');
+                button.textContent = 'Điểm danh';
+            } else {
+                attendanceData[subject][currentDate].add(studentId);
+                button.classList.add('attended');
+                button.textContent = 'Đã điểm danh';
+            }
+
+            // Update summary
+            updateAttendanceSummary(subject);
+        }
+
+        function updateAttendanceSummary(subject) {
+            const currentDate = getCurrentDate();
+            const summaryDiv = document.querySelector('.attendance-summary');
+            
+            if (summaryDiv) {
+                const presentCount = attendanceData[subject][currentDate].size;
+                const totalStudents = students.length;
+                
+                summaryDiv.innerHTML = `
+                    <h3>Tổng kết điểm danh</h3>
+                    <p>Số sinh viên có mặt: ${presentCount}/${totalStudents}</p>
+                    <p>Tỷ lệ điểm danh: ${((presentCount/totalStudents) * 100).toFixed(1)}%</p>
+                `;
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('attendanceModal');
+            if (event.target == modal) {
+                closeAttendanceModal();
+            }
+        }
+
+        // Additional feature: Export attendance data
+        function exportAttendanceData() {
+            const exportData = {
+                date: getCurrentDate(),
+                data: attendanceData
+            };
+            
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = window.URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = `attendance_${getCurrentDate()}.json`;
+            
+            document.body.appendChild(a);
+            a.click();
+            
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Show welcome message by default
+        showWelcome();
+    </script>
+</body>
+</html>

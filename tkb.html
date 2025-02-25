@@ -111,10 +111,6 @@
             transform: translateY(-2px);
         }
 
-        .attended {
-            background: #4CAF50;
-        }
-
         /* Modal styles */
         .modal {
             display: none;
@@ -156,7 +152,6 @@
 
         .student-item {
             display: flex;
-            justify-content: space-between;
             align-items: center;
             padding: 10px;
             border-bottom: 1px solid #ddd;
@@ -164,6 +159,28 @@
 
         .student-info {
             flex-grow: 1;
+            width: 40%;
+        }
+
+        .attendance-options {
+            display: flex;
+            justify-content: space-between;
+            width: 60%;
+        }
+
+        .attendance-option {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+        }
+
+        .attendance-option input[type="radio"] {
+            margin-right: 5px;
+            cursor: pointer;
+        }
+
+        .attendance-option label {
+            cursor: pointer;
         }
 
         @keyframes gradientAnimation {
@@ -237,38 +254,109 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
+        
+        .auto-attendance-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
         .auto-attendance-btn {
-            background: linear-gradient(to right, #ff4b2b, #ff416c);
             color: white;
             border: none;
-            padding: 12px 24px;
+            padding: 12px;
             border-radius: 5px;
             cursor: pointer;
-            margin-bottom: 20px;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
             transition: all 0.3s ease;
-            display: block;
-            width: 100%;
-            max-width: 200px;
-            margin: 0 auto 20px auto;
+            flex: 1;
+            text-align: center;
         }
-
-        .auto-attendance-btn:hover {
+        
+        .btn-present {
+            background: linear-gradient(to right, #00b09b, #96c93d);
+        }
+        
+        .btn-present:hover {
+            background: linear-gradient(to right, #96c93d, #00b09b);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(150, 201, 61, 0.3);
+        }
+        
+        .btn-excused {
+            background: linear-gradient(to right, #ffb347, #ffcc33);
+        }
+        
+        .btn-excused:hover {
+            background: linear-gradient(to right, #ffcc33, #ffb347);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 204, 51, 0.3);
+        }
+        
+        .btn-absent {
             background: linear-gradient(to right, #ff416c, #ff4b2b);
+        }
+        
+        .btn-absent:hover {
+            background: linear-gradient(to right, #ff4b2b, #ff416c);
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(255, 65, 108, 0.3);
         }
 
-        /* Make sure modal content accommodates the new button */
-        .modal-content {
-            padding-top: 30px;
+        /* Student list table styles */
+        .student-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
         }
+
+        .student-table th, .student-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .student-table th {
+            background-color: #f2f2f2;
+        }
+
+        .attendance-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+        .btn-auto {
+        background: linear-gradient(to right, #8e2de2, #4a00e0);
+    }
+    
+    .btn-auto:hover {
+        background: linear-gradient(to right, #4a00e0, #8e2de2);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(138, 45, 226, 0.3);
+    }
     </style>
 </head>
 <body>
-    <input type="checkbox" id="chec
-    k">
+    <input type="checkbox" id="check">
     <label for="check">
         <i class="fas fa-bars" id="btn"></i>
         <i class="fas fa-times" id="cancel"></i>
@@ -339,11 +427,41 @@
         <div class="modal-content">
             <span class="close" onclick="closeAttendanceModal()">&times;</span>
             <h2 id="modalTitle">Điểm danh môn: <span id="subjectName"></span></h2>
-            <button class="auto-attendance-btn">
-                Điểm Danh Tự Động
-            </button>
+            
+            <div class="auto-attendance-container">
+                <button class="auto-attendance-btn btn-auto" onclick="">
+                    Điểm danh tự động
+                </button>
+                <button class="auto-attendance-btn btn-present" onclick="autoAttendanceAll(2)">
+                    Tất cả có mặt
+                </button>
+                <button class="auto-attendance-btn btn-excused" onclick="autoAttendanceAll(1)">
+                    Tất cả vắng có phép
+                </button>
+                <button class="auto-attendance-btn btn-absent" onclick="autoAttendanceAll(0)">
+                    Tất cả vắng mặt
+                </button>
+
+            </div>
+            
             <div class="student-list" id="studentList">
-                <!-- Student list will be populated by JavaScript -->
+                <table class="student-table">
+                    <thead>
+                        <tr>
+                            <th width="10%">STT</th>
+                            <th width="30%">Họ và tên</th>
+                            <th width="15%">Mã SV</th>
+                            <th width="45%" colspan="3">Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentTableBody">
+                        <!-- Student rows will be added here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="attendance-stats" id="attendanceStats">
+                <!-- Stats will be added here by JavaScript -->
             </div>
         </div>
     </div>
@@ -359,6 +477,7 @@
         ];
 
         // Store attendance data for each subject and date
+        // Status values: 0 = absent, 1 = excused absence, 2 = present
         const attendanceData = {};
 
         function showTimetable() {
@@ -379,59 +498,63 @@
         function openAttendanceModal(subject) {
             const modal = document.getElementById('attendanceModal');
             const subjectNameSpan = document.getElementById('subjectName');
-            const studentList = document.getElementById('studentList');
+            const studentTableBody = document.getElementById('studentTableBody');
             const currentDate = getCurrentDate();
             
             subjectNameSpan.textContent = `${subject} - ${currentDate}`;
-            studentList.innerHTML = '';
+            studentTableBody.innerHTML = '';
 
             // Initialize attendance data structure
             if (!attendanceData[subject]) {
                 attendanceData[subject] = {};
             }
             if (!attendanceData[subject][currentDate]) {
-                attendanceData[subject][currentDate] = new Set();
+                attendanceData[subject][currentDate] = {};
             }
 
-            // Generate student list with attendance status
-            students.forEach(student => {
-                const studentItem = document.createElement('div');
-                studentItem.className = 'student-item';
+            // Generate student table rows with attendance options
+            students.forEach((student, index) => {
+                // Get current status or default to null (not marked)
+                const currentStatus = attendanceData[subject][currentDate][student.id] !== undefined 
+                    ? attendanceData[subject][currentDate][student.id] 
+                    : null;
                 
-                const isAttended = attendanceData[subject][currentDate].has(student.id);
+                const row = document.createElement('tr');
                 
-                studentItem.innerHTML = `
-                    <div class="student-info">
-                        <strong>${student.name}</strong> - ${student.studentId}
-                    </div>
-                    <button class="attendance-btn ${isAttended ? 'attended' : ''}" 
-                            onclick="markAttendance('${subject}', ${student.id}, this)">
-                        ${isAttended ? 'Đã điểm danh' : 'Điểm danh'}
-                    </button>
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${student.name}</td>
+                    <td>${student.studentId}</td>
+                    <td>
+                        <div class="attendance-option">
+                            <input type="radio" name="attendance_${student.id}" id="absent_${student.id}" 
+                                value="0" ${currentStatus === 0 ? 'checked' : ''} 
+                                onchange="markAttendance('${subject}', ${student.id}, 0)">
+                            <label for="absent_${student.id}">Vắng mặt</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="attendance-option">
+                            <input type="radio" name="attendance_${student.id}" id="excused_${student.id}" 
+                                value="1" ${currentStatus === 1 ? 'checked' : ''} 
+                                onchange="markAttendance('${subject}', ${student.id}, 1)">
+                            <label for="excused_${student.id}">Vắng mặt có phép</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="attendance-option">
+                            <input type="radio" name="attendance_${student.id}" id="present_${student.id}" 
+                                value="2" ${currentStatus === 2 ? 'checked' : ''} 
+                                onchange="markAttendance('${subject}', ${student.id}, 2)">
+                            <label for="present_${student.id}">Có mặt</label>
+                        </div>
+                    </td>
                 `;
                 
-                studentList.appendChild(studentItem);
+                studentTableBody.appendChild(row);
             });
 
-            // Add summary section
-            const summaryDiv = document.createElement('div');
-            summaryDiv.className = 'attendance-summary';
-            summaryDiv.style.marginTop = '20px';
-            summaryDiv.style.padding = '10px';
-            summaryDiv.style.backgroundColor = '#f5f5f5';
-            summaryDiv.style.borderRadius = '5px';
-
-            const presentCount = attendanceData[subject][currentDate].size;
-            const totalStudents = students.length;
-            
-            summaryDiv.innerHTML = `
-                <h3>Tổng kết điểm danh</h3>
-                <p>Số sinh viên có mặt: ${presentCount}/${totalStudents}</p>
-                <p>Tỷ lệ điểm danh: ${((presentCount/totalStudents) * 100).toFixed(1)}%</p>
-            `;
-            
-            studentList.appendChild(summaryDiv);
-
+            updateAttendanceStats(subject);
             modal.style.display = 'block';
         }
 
@@ -439,7 +562,7 @@
             document.getElementById('attendanceModal').style.display = 'none';
         }
 
-        function markAttendance(subject, studentId, button) {
+        function markAttendance(subject, studentId, status) {
             const currentDate = getCurrentDate();
 
             // Initialize data structures if they don't exist
@@ -447,38 +570,88 @@
                 attendanceData[subject] = {};
             }
             if (!attendanceData[subject][currentDate]) {
-                attendanceData[subject][currentDate] = new Set();
+                attendanceData[subject][currentDate] = {};
             }
 
-            // Toggle attendance
-            if (attendanceData[subject][currentDate].has(studentId)) {
-                attendanceData[subject][currentDate].delete(studentId);
-                button.classList.remove('attended');
-                button.textContent = 'Điểm danh';
-            } else {
-                attendanceData[subject][currentDate].add(studentId);
-                button.classList.add('attended');
-                button.textContent = 'Đã điểm danh';
-            }
-
-            // Update summary
-            updateAttendanceSummary(subject);
+            // Set the new attendance status
+            attendanceData[subject][currentDate][studentId] = parseInt(status);
+            
+            // Update attendance statistics
+            updateAttendanceStats(subject);
         }
 
-        function updateAttendanceSummary(subject) {
+        function updateAttendanceStats(subject) {
             const currentDate = getCurrentDate();
-            const summaryDiv = document.querySelector('.attendance-summary');
+            const statsDiv = document.getElementById('attendanceStats');
             
-            if (summaryDiv) {
-                const presentCount = attendanceData[subject][currentDate].size;
-                const totalStudents = students.length;
+            // Count attendance statuses
+            let presentCount = 0;
+            let absentCount = 0;
+            let excusedCount = 0;
+            let notMarkedCount = students.length;
+            
+            if (attendanceData[subject] && attendanceData[subject][currentDate]) {
+                const data = attendanceData[subject][currentDate];
                 
-                summaryDiv.innerHTML = `
-                    <h3>Tổng kết điểm danh</h3>
-                    <p>Số sinh viên có mặt: ${presentCount}/${totalStudents}</p>
-                    <p>Tỷ lệ điểm danh: ${((presentCount/totalStudents) * 100).toFixed(1)}%</p>
-                `;
+                students.forEach(student => {
+                    if (data[student.id] !== undefined) {
+                        notMarkedCount--; // This student has been marked
+                        
+                        if (data[student.id] === 0) {
+                            absentCount++;
+                        } else if (data[student.id] === 1) {
+                            excusedCount++;
+                        } else if (data[student.id] === 2) {
+                            presentCount++;
+                        }
+                    }
+                });
             }
+            
+            // Create stats display
+            statsDiv.innerHTML = `
+                <div class="stat-item">
+                    <div class="stat-value">${presentCount}</div>
+                    <div class="stat-label">Có mặt</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">${excusedCount}</div>
+                    <div class="stat-label">Vắng có phép</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">${absentCount}</div>
+                    <div class="stat-label">Vắng mặt</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">${notMarkedCount}</div>
+                    <div class="stat-label">Chưa điểm danh</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">${students.length}</div>
+                    <div class="stat-label">Tổng số</div>
+                </div>
+            `;
+        }
+
+        // Function to auto mark all students with a specific status
+        function autoAttendanceAll(status) {
+            const subject = document.getElementById('subjectName').textContent.split(' - ')[0];
+            const currentDate = getCurrentDate();
+            
+            // Mark all students with the specified status
+            students.forEach(student => {
+                markAttendance(subject, student.id, status);
+                
+                // Update the radio button selection
+                const radioId = status === 0 ? `absent_${student.id}` : 
+                              status === 1 ? `excused_${student.id}` : 
+                              `present_${student.id}`;
+                
+                document.getElementById(radioId).checked = true;
+            });
+            
+            // Update statistics
+            updateAttendanceStats(subject);
         }
 
         // Close modal when clicking outside

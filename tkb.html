@@ -867,7 +867,7 @@
             <h2 id="modalTitle">Điểm danh môn: <span id="subjectName"></span></h2>
             
             <div class="auto-attendance-container">
-                <button class="auto-attendance-btn btn-auto" onclick="">
+                <button class="auto-attendance-btn btn-auto" onclick="redirectToBetaAi()">
                     Điểm danh tự động
                 </button>
                 <button class="auto-attendance-btn btn-present" onclick="autoAttendanceAll(2)">
@@ -1196,6 +1196,13 @@
         const aboutLink = document.querySelector('.sidebar ul li:nth-child(5) a');
         aboutLink.setAttribute('onclick', 'showAbout()');
     });
+    function redirectToBetaAi() {
+    // Close the attendance modal
+    closeAttendanceModal();
+    
+    // Show the Beta AI section
+    showBetaAi();
+}
     </script>
    
 </body>

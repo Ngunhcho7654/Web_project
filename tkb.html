@@ -345,14 +345,355 @@
             color: #666;
         }
         .btn-auto {
-        background: linear-gradient(to right, #8e2de2, #4a00e0);
+            background: linear-gradient(to right, #8e2de2, #4a00e0);
+        }
+        
+        .btn-auto:hover {
+            background: linear-gradient(to right, #4a00e0, #8e2de2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(138, 45, 226, 0.3);
+        }
+
+        /* Contact form container */
+        .contact-container {
+            margin-left: 20px;
+            padding: 20px;
+            transition: all .5s;
+            display: none;
+        }
+
+        #check:checked ~ .contact-container {
+            margin-left: 270px;
+        }
+
+        .contact-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-top: 60px;
+        }
+
+        .contact-title {
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        .contact-form {
+            margin-bottom: 40px;
+        }
+
+        .contact-form .form-group {
+            margin-bottom: 15px;
+        }
+
+        .contact-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .contact-form input:focus, .contact-form textarea:focus {
+            border-color: #0072ff;
+            outline: none;
+        }
+
+        .contact-form textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .contact-form button {
+            background: linear-gradient(to right, #0072ff, #00c6ff);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 20px auto 0;
+        }
+
+        .contact-form button:hover {
+            background: linear-gradient(to right, #0052d4, #4364f7);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 114, 255, 0.3);
+        }
+
+        .contacts-list {
+            margin-top: 30px;
+        }
+
+        .contact-list-title {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+            color: #333;
+        }
+
+        .contact-card {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .contact-card h4 {
+            margin-bottom: 5px;
+            color: #0072ff;
+        }
+
+        .contact-card p {
+            margin: 5px 0;
+            color: #666;
+        }
+
+        .contact-card .contact-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-card .contact-info i {
+            margin-right: 8px;
+            color: #0072ff;
+        }
+        .about-container {
+        margin-left: 20px;
+        padding: 20px;
+        transition: all .5s;
+        display: none;
     }
-    
-    .btn-auto:hover {
-        background: linear-gradient(to right, #4a00e0, #8e2de2);
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(138, 45, 226, 0.3);
+
+    #check:checked ~ .about-container {
+        margin-left: 270px;
     }
+
+    .about-content {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        margin-top: 60px;
+        animation: fadeIn 0.5s ease;
+    }
+
+    .about-title {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+        position: relative;
+        padding-bottom: 15px;
+    }
+
+    .about-title:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(to right, #0072ff, #00c6ff);
+    }
+
+    .about-text {
+        margin-bottom: 40px;
+        line-height: 1.8;
+        color: #555;
+    }
+
+    .about-text p {
+        margin-bottom: 15px;
+    }
+
+    .about-features {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-top: 30px;
+    }
+
+    .feature-item {
+        flex-basis: calc(33.333% - 20px);
+        background: #f9f9f9;
+        padding: 25px;
+        border-radius: 10px;
+        text-align: center;
+        transition: all 0.3s ease;
+        margin-bottom: 20px;
+    }
+
+    .feature-item:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-item i {
+        font-size: 40px;
+        color: #0072ff;
+        margin-bottom: 15px;
+    }
+
+    .feature-item h3 {
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .feature-item p {
+        color: #666;
+        line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+        .feature-item {
+            flex-basis: calc(50% - 15px);
+        }
+    }
+
+    @media (max-width: 576px) {
+        .feature-item {
+            flex-basis: 100%;
+        }
+    }
+    .about-container {
+    margin-left: 20px;
+    padding: 20px;
+    transition: all .5s;
+    display: none;
+}
+
+#check:checked ~ .about-container {
+    margin-left: 270px;
+}
+
+.about-content {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    margin-top: 60px;
+    animation: fadeIn 0.5s ease;
+}
+
+.about-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.about-title:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(to right, #0072ff, #00c6ff);
+}
+
+.about-text {
+    margin-bottom: 40px;
+    line-height: 1.8;
+    color: #555;
+}
+
+.about-text p {
+    margin-bottom: 15px;
+}
+
+.about-features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.feature-item {
+    flex-basis: calc(33.333% - 20px);
+    background: #f9f9f9;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.feature-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.feature-item i {
+    font-size: 40px;
+    color: #0072ff;
+    margin-bottom: 15px;
+}
+
+.feature-item h3 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.feature-item p {
+    color: #666;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .feature-item {
+        flex-basis: calc(50% - 15px);
+    }
+}
+
+@media (max-width: 576px) {
+    .feature-item {
+        flex-basis: 100%;
+    }
+        /* Thêm vào phần style hiện có */
+        .beta-ai-container {
+        margin-left: 20px;
+        padding: 20px;
+        transition: all .5s;
+        display: none;
+    }
+
+    #check:checked ~ .beta-ai-container {
+        margin-left: 270px;
+    }
+
+    .beta-ai-content {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        margin-top: 60px;
+        min-height: 500px; /* Đảm bảo container có kích thước nhất định */
+    }
+}
     </style>
 </head>
 <body>
@@ -366,9 +707,9 @@
         <ul>
             <li><a href="#" onclick="showWelcome()"><i class="fa fa-home"></i>Overview</a></li>
             <li><a href="#" onclick="showTimetable()"><i class="fa fa-calendar"></i>Time Table</a></li>
-            <li><a href="#"><i class="fas fa-camera"></i> Beta Ai </a></li>
-            <li><a href="#"><i class="far fa-envelope"></i>Contact</a></li>
-            <li><a href="#"><i class="far fa-question-circle"></i>About</a></li>
+            <li><a href="#" onclick="showBetaAi()"><i class="fas fa-camera"></i> Beta Ai </a></li>
+            <li><a href="#" onclick="showContact()"><i class="far fa-envelope"></i>Contact</a></li>
+            <li><a href="#" onclick="showAbout()"><i class="far fa-question-circle"></i>About</a></li>
             <li><a href="login.html"><i class="fa fa-sign-in-alt"></i>Log out</a></li>
         </ul>
     </div>
@@ -421,7 +762,104 @@
             </table>
         </div>
     </div>
+    <div class="about-container" id="aboutContainer">
+        <div class="about-content">
+            <h2 class="about-title">Về Chúng Tôi</h2>
+            
+            <div class="about-text">
+                <p>Việc tích hợp AI vào camera để điểm danh là một giải pháp hiện đại, giúp tự động hóa quy trình quản lý nhân sự, học sinh, sinh viên một cách nhanh chóng và chính xác. Công nghệ này sử dụng nhận diện khuôn mặt kết hợp với học máy để xác định danh tính, giảm thiểu gian lận và tăng cường bảo mật.</p>
+                
+                <p>Hệ thống có thể áp dụng trong giáo dục, doanh nghiệp và an ninh, mang lại hiệu quả cao. Tuy nhiên, nó cũng đối mặt với thách thức về chi phí, độ chính xác trong điều kiện môi trường khác nhau và bảo vệ dữ liệu cá nhân.</p>
+            </div>
+            
+            <div class="about-features">
+                <div class="feature-item">
+                    <i class="fas fa-camera"></i>
+                    <h3>Nhận Diện Khuôn Mặt</h3>
+                    <p>Công nghệ AI hiện đại nhận diện và xác thực danh tính người dùng với độ chính xác cao.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Bảo Mật Cao</h3>
+                    <p>Hệ thống đảm bảo an toàn dữ liệu cá nhân và giảm thiểu gian lận trong quá trình điểm danh.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <h3>Hiệu Quả</h3>
+                    <p>Tự động hóa quy trình quản lý, tiết kiệm thời gian và nguồn lực so với phương pháp truyền thống.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="beta-ai-container" id="betaAiContainer">
+        <div class="beta-ai-content">
+            <!-- Đây là phần trắng tinh, không có nội dung -->
+        </div>
+    </div>
+    
+    <!-- Contact Container -->
+    <div class="contact-container" id="contactContainer">
+        <div class="contact-content">
+            <h2 class="contact-title">Liên Hệ Với Chúng Tôi</h2>
 
+            <!-- Contact Form -->
+            <div class="contact-form">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Họ và tên</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Số điện thoại</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Nội dung tin nhắn</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    <button type="submit" onclick="submitMessage()">Gửi tin nhắn</button>
+                </form>
+            </div>
+
+            <!-- Contact List -->
+            <div class="contacts-list">
+                <h3 class="contact-list-title">Danh sách liên hệ</h3>
+                <div class="contact-card">
+                    <h4>Hà Khánh </h4>
+                    <p class="contact-info"><i class="fas fa-phone"></i>0775112005 </p>
+                    <p class="contact-info"><i class="fas fa-envelope"></i>hakhanh699669@gmail.com </p>
+                </div>
+                <div class="contact-card">
+                    <h4>Phùng Văn Linh </h4>
+                    <p class="contact-info"><i class="fas fa-phone"></i>0347614676 </p>
+                    <p class="contact-info"><i class="fas fa-envelope"></i>linhp3553@gmail.com </p>
+                </div>
+                <div class="contact-card">
+                    <h4>Phạm Gia Bảo </h4>
+                    <p class="contact-info"><i class="fas fa-phone"></i>0965952822 </p>
+                    <p class="contact-info"><i class="fas fa-envelope"></i>BaoPham0906091@gmail.com </p>
+                </div>
+                <div class="contact-card">
+                    <h4>Đinh Quốc Việt </h4>
+                    <p class="contact-info"><i class="fas fa-phone"></i>0337565155</p>
+                    <p class="contact-info"><i class="fas fa-envelope"></i>dinhquocviet0411@gmail.com </p>
+                </div>
+                <div class="contact-card">
+                    <h4>Lê Tuấn Linh </h4>
+                    <p class="contact-info"><i class="fas fa-phone"></i>0335514047</p>
+                    <p class="contact-info"><i class="fas fa-envelope"></i>gsreddevil119@gmail.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+ 
     <!-- Modal for attendance -->
     <div id="attendanceModal" class="modal">
         <div class="modal-content">
@@ -466,29 +904,66 @@
         </div>
     </div>
 
+
+
+         
+
     <script>
         // Sample student data
         const students = [
-            { id: 1, name: "Nguyễn Văn A", studentId: "SV001" },
-            { id: 2, name: "Trần Thị B", studentId: "SV002" },
-            { id: 3, name: "Lê Văn C", studentId: "SV003" },
-            { id: 4, name: "Phạm Thị D", studentId: "SV004" },
-            { id: 5, name: "Hoàng Văn E", studentId: "SV005" }
-        ];
+        { id: 1, name: "Nguyễn Văn A", studentId: "SV001" },
+        { id: 2, name: "Trần Thị B", studentId: "SV002" },
+        { id: 3, name: "Lê Văn C", studentId: "SV003" },
+        { id: 4, name: "Phạm Thị D", studentId: "SV004" },
+        { id: 5, name: "Hoàng Văn E", studentId: "SV005" }
+    ];
 
-        // Store attendance data for each subject and date
-        // Status values: 0 = absent, 1 = excused absence, 2 = present
-        const attendanceData = {};
+    // Store attendance data for each subject and date
+    // Status values: 0 = absent, 1 = excused absence, 2 = present
+    const attendanceData = {};
 
-        function showTimetable() {
-            document.getElementById('timetableContainer').style.display = 'block';
-            document.getElementById('welcomeMessage').style.display = 'none';
-        }
+      // Thêm hàm showBetaAi() vào phần script hiện có
+      function showBetaAi() {
+        document.getElementById('timetableContainer').style.display = 'none';
+        document.getElementById('welcomeMessage').style.display = 'none';
+        document.getElementById('contactContainer').style.display = 'none';
+        document.getElementById('aboutContainer').style.display = 'none';
+        document.getElementById('betaAiContainer').style.display = 'block';
+    }
+    
+    // Cập nhật các hàm hiện có để ẩn container mới
+    function showTimetable() {
+        document.getElementById('timetableContainer').style.display = 'block';
+        document.getElementById('welcomeMessage').style.display = 'none';
+        document.getElementById('contactContainer').style.display = 'none';
+        document.getElementById('aboutContainer').style.display = 'none';
+        document.getElementById('betaAiContainer').style.display = 'none';
+    }
 
-        function showWelcome() {
-            document.getElementById('timetableContainer').style.display = 'none';
-            document.getElementById('welcomeMessage').style.display = 'block';
-        }
+    function showWelcome() {
+        document.getElementById('timetableContainer').style.display = 'none';
+        document.getElementById('welcomeMessage').style.display = 'block';
+        document.getElementById('contactContainer').style.display = 'none';
+        document.getElementById('aboutContainer').style.display = 'none';
+        document.getElementById('betaAiContainer').style.display = 'none';
+    }
+
+    function showContact() {
+        document.getElementById('timetableContainer').style.display = 'none';
+        document.getElementById('welcomeMessage').style.display = 'none';
+        document.getElementById('contactContainer').style.display = 'block';
+        document.getElementById('aboutContainer').style.display = 'none';
+        document.getElementById('betaAiContainer').style.display = 'none';
+    }
+
+    function showAbout() {
+        document.getElementById('timetableContainer').style.display = 'none';
+        document.getElementById('welcomeMessage').style.display = 'none';
+        document.getElementById('contactContainer').style.display = 'none';
+        document.getElementById('aboutContainer').style.display = 'block';
+        document.getElementById('betaAiContainer').style.display = 'none';
+    }
+
 
         function getCurrentDate() {
             const now = new Date();
@@ -617,7 +1092,7 @@
                 <div class="stat-item">
                     <div class="stat-value">${excusedCount}</div>
                     <div class="stat-label">Vắng có phép</div>
-                </div>
+                     </div>
                 <div class="stat-item">
                     <div class="stat-value">${absentCount}</div>
                     <div class="stat-label">Vắng mặt</div>
@@ -686,6 +1161,42 @@
 
         // Show welcome message by default
         showWelcome();
+       
+        function submitMessage() {
+    // Get form values (if needed)
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+    const message = document.getElementById('message').value;
+    
+    // Validate the form (optional)
+    if (name && email && phone && message) {
+        // Here you would typically send the data to a server
+        
+        // Show success alert
+        alert('Gửi tin nhắn thành công!');
+        
+        // Reset the form
+        document.getElementById('contactForm').reset();
+    } else {
+        // Optional: Show error for empty fields
+        alert('Vui lòng điền đầy đủ thông tin!');
+    }
+}
+  // Thêm hàm hiển thị About vào các script hiện có
+  function showAbout() {
+        document.querySelector('.welcome-message').style.display = 'none';
+        document.querySelector('.timetable-container').style.display = 'none';
+        document.querySelector('.contact-container').style.display = 'none';
+        document.querySelector('.about-container').style.display = 'block';
+    }
+    
+    // Cập nhật onclick event cho mục About trong sidebar
+    document.addEventListener('DOMContentLoaded', function() {
+        const aboutLink = document.querySelector('.sidebar ul li:nth-child(5) a');
+        aboutLink.setAttribute('onclick', 'showAbout()');
+    });
     </script>
+   
 </body>
 </html>

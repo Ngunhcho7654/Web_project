@@ -174,6 +174,18 @@
         .toggle-form:hover {
             color: #0052d4;
         }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .remember-me input {
+            margin-right: 8px;
+        }
     </style>
 </head>
 <body>
@@ -190,6 +202,10 @@
                 <input type="password" id="password" name="password" placeholder="Mật khẩu">
                 <div class="error-message">Vui lòng nhập mật khẩu</div>
             </div>
+            <div class="remember-me">
+                <input type="checkbox" id="rememberMe" name="rememberMe">
+                <label for="rememberMe">Ghi nhớ đăng nhập</label>
+            </div>
             <button type="submit" class="btn-login">
                 <i class="fas fa-sign-in-alt"></i> Đăng Nhập 
             </button>
@@ -204,11 +220,25 @@
     </div>
 
     <script>
+        // Kiểm tra và tải thông tin từ localStorage khi trang được tải
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedUsername = localStorage.getItem('rememberedUsername');
+            const savedPassword = localStorage.getItem('rememberedPassword');
+            const rememberStatus = localStorage.getItem('rememberMe');
+            
+            if (rememberStatus === 'true' && savedUsername && savedPassword) {
+                document.getElementById('username').value = savedUsername;
+                document.getElementById('password').value = savedPassword;
+                document.getElementById('rememberMe').checked = true;
+            }
+        });
+
         function validateForm(event) {
             event.preventDefault();
             
             const username = document.getElementById('username');
             const password = document.getElementById('password');
+            const rememberMe = document.getElementById('rememberMe');
             let isValid = true;
 
             // Reset previous error states
@@ -230,6 +260,18 @@
 
             // If form is valid, proceed with submission
             if (isValid) {
+                // Lưu thông tin đăng nhập vào localStorage nếu checkbox được chọn
+                if (rememberMe.checked) {
+                    localStorage.setItem('rememberedUsername', username.value);
+                    localStorage.setItem('rememberedPassword', password.value);
+                    localStorage.setItem('rememberMe', 'true');
+                } else {
+                    // Xóa thông tin đăng nhập nếu không chọn ghi nhớ
+                    localStorage.removeItem('rememberedUsername');
+                    localStorage.removeItem('rememberedPassword');
+                    localStorage.removeItem('rememberMe');
+                }
+                
                 window.location.href = 'tkb.html';
             }
 

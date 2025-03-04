@@ -92,13 +92,23 @@
             display: block;
         }
 
-        .input-group i {
+        .input-group i.icon-left {
             position: absolute;
             left: 12px;
             top: 50%;
             transform: translateY(-50%);
             color: #888;
             font-size: 16px;
+        }
+
+        .input-group i.toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+            font-size: 16px;
+            cursor: pointer;
         }
 
         button {
@@ -155,23 +165,25 @@
         <h2>Đăng Ký</h2>
         <form id="registerForm" onsubmit="return validateForm(event)">
             <div class="input-group">
-                <i class='bx bx-user'></i>
+                <i class='bx bx-user icon-left'></i>
                 <input type="text" id="username" name="username" placeholder="Tên đăng nhập">
                 <div class="error-message">Vui lòng nhập tên đăng nhập</div>
             </div>
             <div class="input-group">
-                <i class='bx bx-envelope'></i>
+                <i class='bx bx-envelope icon-left'></i>
                 <input type="email" id="email" name="email" placeholder="Email">
                 <div class="error-message">Vui lòng nhập email hợp lệ</div>
             </div>
             <div class="input-group">
-                <i class='bx bxs-lock-alt'></i>
+                <i class='bx bxs-lock-alt icon-left'></i>
                 <input type="password" id="password" name="password" placeholder="Mật khẩu">
+                <i class='bx bx-hide toggle-password' id="toggle-password"></i>
                 <div class="error-message">Mật khẩu phải có ít nhất 6 ký tự</div>
             </div>
             <div class="input-group">
-                <i class='bx bxs-lock-alt'></i>
+                <i class='bx bxs-lock-alt icon-left'></i>
                 <input type="password" id="confirm-password" name="confirm-password" placeholder="Xác nhận mật khẩu">
+                <i class='bx bx-hide toggle-password' id="toggle-confirm-password"></i>
                 <div class="error-message">Mật khẩu không khớp</div>
             </div>
             <button type="submit" class="btn-register">
@@ -182,59 +194,143 @@
     </div>
 
     <script>
-        function validateForm(event) {
-            event.preventDefault();
-            
-            const username = document.getElementById('username');
-            const email = document.getElementById('email');
-            const password = document.getElementById('password');
-            const confirmPassword = document.getElementById('confirm-password');
-            let isValid = true;
+function validateForm(event) {
+    event.preventDefault();
+    
+    const username = document.getElementById('username');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirm-password');
+    let isValid = true;
 
-            // Reset previous error states
-            document.querySelectorAll('.input-group').forEach(group => {
-                group.classList.remove('error');
-            });
+    // Reset previous error states
+    document.querySelectorAll('.input-group').forEach(group => {
+        group.classList.remove('error');
+    });
 
-            // Validate username
-            if (!username.value.trim()) {
-                username.parentElement.classList.add('error');
-                isValid = false;
+    // Validate username
+    if (!username.value.trim()) {
+        username.parentElement.classList.add('error');
+        isValid = false;
+    }
+
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.value.trim() || !emailRegex.test(email.value)) {
+        email.parentElement.classList.add('error');
+        isValid = false;
+    }
+
+    // Validate password
+    if (!password.value || password.value.length < 6) {
+        password.parentElement.classList.add('error');
+        isValid = false;
+    }
+
+    // Validate confirm password
+    if (password.value !== confirmPassword.value) {
+        confirmPassword.parentElement.classList.add('error');
+        isValid = false;
+    }
+
+    // If form is valid, proceed with API call
+    if (isValid) {
+        // Prepare user data for API call
+        const userData = {
+            username: username.value.trim(),
+            email: email.value.trim(),
+            password: password.value
+        };
+
+        // Call the API to register the user
+        registerUser(userData);
+    }
+
+    return isValid;
+}
+
+// Function to call the registration API
+async function registerUser(userData) {
+    try {
+        // Hiển thị trạng thái loading khi đăng ký
+        const btnRegister = document.querySelector('.btn-register');
+        btnRegister.disabled = true;
+        btnRegister.innerHTML = '<i class="bx bx-loader bx-spin"></i> Đang xử lý...';
+
+        // URL API đúng với định dạng yêu cầu
+        const apiUrl = `https://localhost:7266/Controllerdki/THONG_TIN/Insert?tk=${encodeURIComponent(userData.username)}&email=${encodeURIComponent(userData.email)}&mk=${encodeURIComponent(userData.password)}`;
+
+        // Gọi API với phương thức POST
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json'
             }
-
-            // Validate email
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!email.value.trim() || !emailRegex.test(email.value)) {
-                email.parentElement.classList.add('error');
-                isValid = false;
-            }
-
-            // Validate password
-            if (!password.value || password.value.length < 6) {
-                password.parentElement.classList.add('error');
-                isValid = false;
-            }
-
-            // Validate confirm password
-            if (password.value !== confirmPassword.value) {
-                confirmPassword.parentElement.classList.add('error');
-                isValid = false;
-            }
-
-            // If form is valid, proceed with submission
-            if (isValid) {
-                window.location.href = 'login.html';
-            }
-
-            return isValid;
-        }
-
-        // Clear error messages when user starts typing
-        document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('input', function() {
-                this.parentElement.classList.remove('error');
-            });
         });
-    </script>
+
+        const data = await response.json();
+
+        if (response.ok) {
+            alert('Đăng ký thành công!');
+            window.location.href = 'login.html'; // Chuyển hướng sau khi đăng ký thành công
+        } else {
+            // Kiểm tra xem có phải lỗi email trùng không
+            if (data.message && data.message.includes('Email này đã được sử dụng')) {
+                // Hiển thị thông báo cụ thể về email trùng
+                alert('Email này đã được sử dụng. Vui lòng chọn email khác.');
+                
+                // Có thể thêm code để highlight trường email
+                const emailInput = document.querySelector('input[type="email"]');
+                if (emailInput) {
+                    emailInput.classList.add('error');
+                    emailInput.focus();
+                }
+            } else {
+                // Hiển thị thông báo lỗi khác
+                alert(`Đăng ký thất bại: ${data.message || 'Vui lòng thử lại sau'}`);
+            }
+            
+            btnRegister.disabled = false;
+            btnRegister.innerHTML = '<i class="bx bx-check-circle"></i> Đăng Ký';
+        }
+    } catch (error) {
+        console.error('Error during registration:', error);
+        alert('Đã xảy ra lỗi khi đăng ký. Vui lòng thử lại sau.');
+        const btnRegister = document.querySelector('.btn-register');
+        btnRegister.disabled = false;
+        btnRegister.innerHTML = '<i class="bx bx-check-circle"></i> Đăng Ký';
+    }
+}
+// Xóa thông báo lỗi khi người dùng bắt đầu nhập
+document.querySelectorAll('input').forEach(input => {
+    input.addEventListener('input', function() {
+        this.parentElement.classList.remove('error');
+    });
+});
+
+// Chức năng hiển thị/ẩn mật khẩu
+function setupPasswordToggle(passwordFieldId, toggleButtonId) {
+    const passwordField = document.getElementById(passwordFieldId);
+    const toggleButton = document.getElementById(toggleButtonId);
+
+    toggleButton.addEventListener('click', function() {
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            toggleButton.classList.remove('bx-hide');
+            toggleButton.classList.add('bx-show');
+        } else {
+            passwordField.type = 'password';
+            toggleButton.classList.remove('bx-show');
+            toggleButton.classList.add('bx-hide');
+        }
+    });
+}
+
+// Thiết lập chức năng hiển thị/ẩn cho cả hai trường mật khẩu
+document.addEventListener('DOMContentLoaded', function() {
+    setupPasswordToggle('password', 'toggle-password');
+    setupPasswordToggle('confirm-password', 'toggle-confirm-password');
+});
+</script>
 </body>
 </html>
